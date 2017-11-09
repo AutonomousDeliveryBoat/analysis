@@ -28,6 +28,7 @@ boat_width = B_calc + space_btw_hulls
 print L_calc
 print boat_width
 print draft
+print space_btw_hulls
 print B_calc
 
 
