@@ -1,13 +1,15 @@
 import numpy as np
+from scipy.interpolate import interp2d
 
 # inputs
 total_mass = 45.0 # kg
-water_density = 1000.0
-total_displacement = total_mass / water_density / 2
-space_ratio = 0.3
+water_density = 1000.0 # kg / m^3
+hull_displacement = total_mass / water_density / 2 # displacement of each hull
+space_ratio = 0.3 # ratio of hull spacing to length
+boat_velocity = 3.0 # m/s
 
 
-# southampton catamaran series
+# southampton catamaran series data
 models = np.array(['3b', '4a', '4b', '4c', '5a', '5b', '5c', '6a', '6b', '6c']) # different hull designs
 L_model = 1.6 # tested length (m)
 L_B = np.array([7.0, 10.4, 9.0, 8.0, 12.8, 11.0, 9.9, 15.1, 13.1, 11.7])
@@ -19,16 +21,50 @@ Cm = 0.565
 S = np.array([0.434, 0.348, 0.338, 0.340, 0.282, 0.276, 0.277, 0.240, 0.233, 0.234])
 LCB = -6.4
 
-L_calc = L_D_1_3 * total_displacement**(1.0/3.0)
+# hull size calculations
+L_calc = L_D_1_3 * hull_displacement ** (1.0 / 3.0)
 B_calc = L_calc / L_B
 draft = B_calc / B_T
 space_btw_hulls = L_calc * space_ratio
 boat_width = B_calc + space_btw_hulls
 
-print L_calc
-print boat_width
-print draft
-print space_btw_hulls
-print B_calc
+print "Total Length: " + str(L_calc)
+print "Total Width: " + str(boat_width)
+print "Draft: " + str(draft)
+print "Hull Width: " + str(B_calc)
+
+# resistance table lookup
+Fr_table = np.linspace(0.2, 1.0, 17)
+space_ratio_table = [0.3, 0.4, 0.5]
+
+# boat 3b appendix table
+Cr_table = np.matrix('3.214  2.642  2.555;'
+               '3.726  4.019  3.299;'
+               '4.750  4.464  3.938;'
+               '5.943  5.472  4.803;'
+               '7.648  7.085  6.589;'
+               '12.569  10.934  9.064;'
+               '14.237  12.027  10.112;'
+               '12.275  10.538  9.394;'
+               '10.089  8.962  8.361;'
+               '8.123  7.592  7.488;'
+               '6.852  6.642  6.726;'
+               '5.934  5.921  6.078;'
+               '5.289  5.373  5.537;'
+               '4.814  4.949  5.046;'
+               '4.452  4.543  4.624;'
+               '4.172  4.236  4.335;'
+               '3.936  3.996  4.099')
+
+# function that does 2d interpolation on the table
+f = interp2d(space_ratio_table, Fr_table, Cr_table)
+
+# lookup Cr
+Cr = f(0.3, 0.9)[0]
+print 'Cr: ' + str(Cr/1000.0)
+
+
+
+
 
 
