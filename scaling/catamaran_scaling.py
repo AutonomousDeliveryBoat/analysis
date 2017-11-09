@@ -3,7 +3,8 @@ import numpy as np
 # inputs
 total_mass = 45.0 # kg
 water_density = 1000.0
-total_displacement = total_mass / water_density
+total_displacement = total_mass / water_density / 2
+space_ratio = 0.3
 
 
 # southampton catamaran series
@@ -17,4 +18,16 @@ Cp = 0.693
 Cm = 0.565
 S = np.array([0.434, 0.348, 0.338, 0.340, 0.282, 0.276, 0.277, 0.240, 0.233, 0.234])
 LCB = -6.4
+
+L_calc = L_D_1_3 * total_displacement**(1.0/3.0)
+B_calc = L_calc / L_B
+draft = B_calc / B_T
+space_btw_hulls = L_calc * space_ratio
+boat_width = B_calc + space_btw_hulls
+
+print L_calc
+print boat_width
+print draft
+print B_calc
+
 
