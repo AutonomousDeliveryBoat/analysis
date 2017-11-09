@@ -2,11 +2,12 @@ import numpy as np
 from scipy.interpolate import interp2d
 
 # inputs
-total_mass = 45.0 # kg
+total_mass = 50.0 # kg
 water_density = 1000.0 # kg / m^3
 hull_displacement = total_mass / water_density / 2 # displacement of each hull
-space_ratio = 0.3 # ratio of hull spacing to length
+space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
+desired_hull = 0 #index (only used in dimension calculations)
 
 
 # southampton catamaran series data
@@ -28,10 +29,16 @@ draft = B_calc / B_T
 space_btw_hulls = L_calc * space_ratio
 boat_width = B_calc + space_btw_hulls
 
-print "Total Length: " + str(L_calc)
-print "Total Width: " + str(boat_width)
-print "Draft: " + str(draft)
-print "Hull Width: " + str(B_calc)
+print '\n###### INPUT PARAMETERS ######'
+print "Chosen Hull: " + str(models[desired_hull])
+print "Total Mass Displaced: " + str(total_mass) + ' kg'
+print "Desired Velocity: " + str(boat_velocity) + ' m/s\n\n'
+
+print '###### SIZE PARAMETERS ######'
+print "Total Length: " + str(L_calc[desired_hull]) + ' m'
+print "Total Width: " + str(boat_width[desired_hull]) + ' m'
+print "Draft: " + str(draft[desired_hull]) + ' m'
+print "Hull Width: " + str(B_calc[desired_hull]) + ' m\n\n'
 
 # resistance table lookup
 Fr_table = np.linspace(0.2, 1.0, 17)
@@ -57,10 +64,14 @@ Cr_table = np.matrix('3.214  2.642  2.555;'
                '3.936  3.996  4.099')
 
 # function that does 2d interpolation on the table
-f = interp2d(space_ratio_table, Fr_table, Cr_table)
+f = interp2d(space_ratio_table, Fr_table, Cr_table, bounds_error=True)
 
 # lookup Cr
-Cr = f(0.3, 0.9)[0]
+Fr = boat_velocity / np.sqrt(9.81 * L_calc[desired_hull])
+Cr = f(space_ratio, Fr)[0]
+
+print '###### DRAG PARAMETERS ######'
+print 'Fr: ' + str(Fr)
 print 'Cr: ' + str(Cr/1000.0)
 
 
