@@ -1,7 +1,9 @@
 import numpy as np
 
 # inputs
-total_mass = 45 # kg
+total_mass = 45.0 # kg
+water_density = 1000.0
+total_displacement = total_mass / water_density
 
 
 # southampton catamaran series
