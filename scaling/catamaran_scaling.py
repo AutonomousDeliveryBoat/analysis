@@ -8,6 +8,7 @@ hull_displacement = total_mass / water_density / 2 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
 desired_hull = 0 #index (only used in dimension calculations)
+efficiency = 0.7
 
 
 # southampton catamaran series data
@@ -64,15 +65,44 @@ Cr_table = np.matrix('3.214  2.642  2.555;'
                '3.936  3.996  4.099')
 
 # function that does 2d interpolation on the table
-f = interp2d(space_ratio_table, Fr_table, Cr_table, bounds_error=True)
+Cr_lookup = interp2d(space_ratio_table, Fr_table, Cr_table, bounds_error=True)
 
 # lookup Cr
 Fr = boat_velocity / np.sqrt(9.81 * L_calc[desired_hull])
-Cr = f(space_ratio, Fr)[0]
+Cr = Cr_lookup(space_ratio, Fr)[0] / 1000.0
 
-print '###### DRAG PARAMETERS ######'
+# Reynolds Numbers
+Re_model = 2.761 * 1.6 / 1.14E-6
+Re_ship = boat_velocity * L_calc[desired_hull] / 1.14E-6
+
+C_fm = 0.075 / (np.log10(Re_model) - 2) ** 2
+C_fs = 0.075 / (np.log10(Re_ship) - 2) ** 2
+
+Ct = C_fs + Cr
+
+# calculate Cs
+Cs = 6.554 - 1.226*B_T[desired_hull] + 0.216*B_T[desired_hull]**2\
+     - 15.409*Cb + 4.468*B_T[desired_hull]*Cb - 0.694*(B_T[desired_hull]**2)*Cb\
+     + 15.404*Cb**2 - 4.527*B_T[desired_hull]*(Cb**2) + 0.655*(B_T[desired_hull]**2)*(Cb**2)
+S = 2*Cs*np.sqrt(hull_displacement * L_calc[desired_hull])
+
+# calculate drag force on hull and power required
+Rt = Ct * 0.5 * water_density * boat_velocity**2 * S
+P_raw = Rt * boat_velocity
+P_actual = P_raw / efficiency
+
+print '###### DIMENSIONLESS PARAMETERS ######'
 print 'Fr: ' + str(Fr)
-print 'Cr: ' + str(Cr/1000.0)
+print 'Cf: ' + str(C_fs)
+print 'Cr: ' + str(Cr)
+print 'Ct: ' + str(Ct) + '\n\n'
+
+print '###### RESISTANCE PARAMETERS ######'
+print 'Rt: ' + str(Rt) + ' N'
+print 'Total Propulsive Power: ' + str(P_actual) + ' W'
+
+
+
 
 
 
