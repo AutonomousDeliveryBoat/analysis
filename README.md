@@ -1,5 +1,5 @@
 # analysis
-Engineering analysis scripts and tools.
+Engineering analysis scripts and tools for boat.
 
 ## Jupyter Notebook
 To run .ipynb files, install JupyterNotebook: http://jupyter.org/. 
