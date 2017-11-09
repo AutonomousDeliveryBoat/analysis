@@ -1,15 +1,14 @@
-from __future__ import print_function
 import numpy as np
 from scipy.interpolate import interp2d
-
 
 # inputs
 total_mass = 50.0 # kg
 water_density = 1000.0 # kg / m^3
+hull_displacement = total_mass / water_density / 2 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
 desired_hull = 0 #index (only used in dimension calculations)
-efficiency = 0.5
+efficiency = 0.7
 
 
 # southampton catamaran series data
@@ -25,23 +24,22 @@ S = np.array([0.434, 0.348, 0.338, 0.340, 0.282, 0.276, 0.277, 0.240, 0.233, 0.2
 LCB = -6.4
 
 # hull size calculations
-hull_displacement = total_mass / water_density / 2 # displacement of each hull
 L_calc = L_D_1_3 * hull_displacement ** (1.0 / 3.0)
 B_calc = L_calc / L_B
 draft = B_calc / B_T
 space_btw_hulls = L_calc * space_ratio
 boat_width = B_calc + space_btw_hulls
 
-print('\n###### INPUT PARAMETERS ######')
-print("Chosen Hull: " + str(models[desired_hull]))
-print("Total Mass Displaced: " + str(total_mass) + ' kg')
-print("Desired Velocity: " + str(boat_velocity) + ' m/s\n\n')
+print '\n###### INPUT PARAMETERS ######'
+print "Chosen Hull: " + str(models[desired_hull])
+print "Total Mass Displaced: " + str(total_mass) + ' kg'
+print "Desired Velocity: " + str(boat_velocity) + ' m/s\n\n'
 
-print('###### SIZE PARAMETERS ######')
-print("Total Length: " + str(L_calc[desired_hull]) + ' m')
-print("Total Width: " + str(boat_width[desired_hull]) + ' m')
-print("Draft: " + str(draft[desired_hull]) + ' m')
-print("Hull Width: " + str(B_calc[desired_hull]) + ' m\n\n')
+print '###### SIZE PARAMETERS ######'
+print "Total Length: " + str(L_calc[desired_hull]) + ' m'
+print "Total Width: " + str(boat_width[desired_hull]) + ' m'
+print "Draft: " + str(draft[desired_hull]) + ' m'
+print "Hull Width: " + str(B_calc[desired_hull]) + ' m\n\n'
 
 # resistance table lookup
 Fr_table = np.linspace(0.2, 1.0, 17)
@@ -93,16 +91,15 @@ Rt = Ct * 0.5 * water_density * boat_velocity**2 * S
 P_raw = Rt * boat_velocity
 P_actual = P_raw / efficiency
 
-print('###### DIMENSIONLESS PARAMETERS ######')
-print('Fr: ' + str(Fr))
-print('Cf: ' + str(C_fs))
-print('Cr: ' + str(Cr))
-print('Ct: ' + str(Ct) + '\n\n')
+print '###### DIMENSIONLESS PARAMETERS ######'
+print 'Fr: ' + str(Fr)
+print 'Cf: ' + str(C_fs)
+print 'Cr: ' + str(Cr)
+print 'Ct: ' + str(Ct) + '\n\n'
 
-print('###### RESISTANCE PARAMETERS ######')
-print('Rt: ' + str(Rt) + ' N')
-print('Raw Propulsive Power: ' + str(P_raw) + ' W')
-print('Electric Power: ' + str(P_actual) + ' W')
+print '###### RESISTANCE PARAMETERS ######'
+print 'Rt: ' + str(Rt) + ' N'
+print 'Total Propulsive Power: ' + str(P_actual) + ' W'
 
 
 
