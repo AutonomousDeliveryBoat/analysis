@@ -72,7 +72,8 @@ Fr = boat_velocity / np.sqrt(9.81 * L_calc[desired_hull])
 Cr = Cr_lookup(space_ratio, Fr)[0] / 1000.0
 
 # Reynolds Numbers
-Re_model = 2.761 * 1.6 / 1.14E-6
+Vm = boat_velocity * np.sqrt(1.6 / L_calc[desired_hull])
+Re_model = Vm * 1.6 / 1.14E-6
 Re_ship = boat_velocity * L_calc[desired_hull] / 1.14E-6
 
 C_fm = 0.075 / (np.log10(Re_model) - 2) ** 2
@@ -100,12 +101,3 @@ print 'Ct: ' + str(Ct) + '\n\n'
 print '###### RESISTANCE PARAMETERS ######'
 print 'Rt: ' + str(Rt) + ' N'
 print 'Total Propulsive Power: ' + str(P_actual) + ' W'
-
-
-
-
-
-
-
-
-
