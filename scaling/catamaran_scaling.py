@@ -8,7 +8,7 @@ hull_displacement = total_mass / water_density / 2 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
 desired_hull = 0 #index (only used in dimension calculations)
-efficiency = 0.7
+efficiency = 0.75
 
 
 # southampton catamaran series data
