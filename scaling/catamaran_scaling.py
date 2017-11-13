@@ -39,6 +39,7 @@ print "Desired Velocity: " + str(boat_velocity) + ' m/s\n\n'
 print '###### SIZE PARAMETERS ######'
 print "Total Length: " + str(L_calc[desired_hull]) + ' m'
 print "Total Width: " + str(boat_width[desired_hull]) + ' m'
+print "Centerline Distance: " + str(space_btw_hulls[desired_hull])
 print "Draft: " + str(draft[desired_hull]) + ' m'
 print "Hull Width: " + str(B_calc[desired_hull]) + ' m\n\n'
 
