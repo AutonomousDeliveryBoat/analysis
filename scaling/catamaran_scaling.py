@@ -8,7 +8,7 @@ hull_displacement = total_mass / water_density / 2 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
 desired_hull = 0 #index (only used in dimension calculations)
-efficiency = 0.75
+efficiency = 0.7
 
 
 # southampton catamaran series data
@@ -33,6 +33,7 @@ boat_width = B_calc + space_btw_hulls
 print '\n###### INPUT PARAMETERS ######'
 print "Chosen Hull: " + str(models[desired_hull])
 print "Total Mass Displaced: " + str(total_mass) + ' kg'
+print "Lumped Efficiency: " + str(efficiency)
 print "Desired Velocity: " + str(boat_velocity) + ' m/s\n\n'
 
 print '###### SIZE PARAMETERS ######'
@@ -96,7 +97,8 @@ print '###### DIMENSIONLESS PARAMETERS ######'
 print 'Fr: ' + str(Fr)
 print 'Cf: ' + str(C_fs)
 print 'Cr: ' + str(Cr)
-print 'Ct: ' + str(Ct) + '\n\n'
+print 'Ct: ' + str(Ct)
+print 'Re: ' + str(Re_ship) + '\n\n'
 
 print '###### RESISTANCE PARAMETERS ######'
 print 'Rt: ' + str(Rt) + ' N'
