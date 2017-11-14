@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Inputs
+## Inputs
 vel_FS = np.array([])
 vel_M = np.array([])
 value = 0.2
@@ -12,7 +12,7 @@ while value < 3.2: # set the velocity values we are going to test.
     vel_M = np.append(vel_M, [value])
     value = value + 0.2
 
-# Model properties
+## Model properties
 L_M = 0.3047 # length of the model, in m
 C_bM = 0.397
 B_M = 0.041 # width of the model, in m
@@ -23,7 +23,7 @@ nu_M = 8.9e-4 # fluid viscosity of fluid where model is tested
 
 Froude = vel_M / np.sqrt(9.81*L_M)
 
-# Full scale properties
+## Full scale properties
 L_FS = 1.83335912186 # length of full scale boat, in m
 C_bFS = 0.397
 B_FS = 0.26190844598 # width of full scale boat, in m
@@ -38,13 +38,13 @@ R_TM = np.array([0.2, 0.5, 1.1, 1.8, 2.7, 3.9, 5.3, 6.9, 8.7, 10.7, 13, 15.5, 18
 #     R_TM = np.append(R_TM, 0.2*0.5*rho_M*np.square(vel_M)*S_M)
 # print R_TM
 
-# Calculating model coefficients
+##  Calculating model coefficients
 C_TM = R_TM / (0.5*rho_M*np.square(vel_M)*S_M)
 R_nM = (vel_M*L_M)/nu_M
 C_FM = 0.075 / (np.log10(R_nM)-2)**2
 C_R = C_TM - C_FM
 
-# Calculating full scale coefficients
+## Calculating full scale coefficients
 R_nFS = (vel_FS*L_FS)/nu_FS
 C_FFS = 0.075 / (np.log10(R_nFS)-2)**2
 C_TS = C_FFS + C_R
