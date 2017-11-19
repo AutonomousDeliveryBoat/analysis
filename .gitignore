@@ -1,6 +1,7 @@
 .dep/
 build/
 *.idea
+*.STL
 *.swp
 *.swo
 *.swn

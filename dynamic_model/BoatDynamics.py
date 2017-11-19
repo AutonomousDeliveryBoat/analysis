@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class BoatDynamics:
     def __init__(self):
         pass
