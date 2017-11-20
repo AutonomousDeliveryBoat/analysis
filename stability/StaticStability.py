@@ -42,7 +42,6 @@ class StaticStability:
         plt.show()
 
 
-
 if __name__ == '__main__':
     SS = StaticStability()
     mesh_out = SS.load_mesh('Hull_3B_Full-Scale.stl')
