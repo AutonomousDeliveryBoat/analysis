@@ -48,10 +48,7 @@ class StaticStability:
             figure = plt.figure()
             axes = mplot3d.Axes3D(figure)
         else:
-            figure = plt.gcf()
             axes = plt.gca()
-
-
 
         # Load the STL files and add the vectors to the plot
         axes.add_collection3d(mplot3d.art3d.Poly3DCollection(mesh_in.vectors))
