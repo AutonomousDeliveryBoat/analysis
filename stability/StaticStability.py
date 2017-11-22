@@ -34,11 +34,17 @@ class StaticStability:
         mesh_in = self.pyMesh_to_stl(mesh_in)
         return np.array(mesh_in.get_mass_properties()[1])
 
-    def plot_stl(self, mesh_in):
+    def plot_stl(self, mesh_in, hold=False):
         mesh_in = self.pyMesh_to_stl(mesh_in)
         # Create a new plot
-        figure = plt.figure()
-        axes = mplot3d.Axes3D(figure)
+        if not hold:
+            figure = plt.figure()
+            axes = mplot3d.Axes3D(figure)
+        else:
+            figure = plt.gcf()
+            axes = plt.gca()
+
+
 
         # Load the STL files and add the vectors to the plot
         axes.add_collection3d(mplot3d.art3d.Poly3DCollection(mesh_in.vectors))
@@ -48,11 +54,11 @@ class StaticStability:
         axes.auto_scale_xyz(scale, scale, scale)
 
         # Show the plot to the screen
-        plt.show()
+        # plt.show()
 
     # axis = 'x', 'y', or 'z'
     # point is the point to rotate about
-    # angle is the angle (in radians)
+    # angle (in radians)
     def rotate_mesh(self, mesh_in, point, axis, angle):
         if axis == 'x':
             axis = [1.0, 0.0, 0.0]
@@ -71,10 +77,18 @@ class StaticStability:
 
         return mesh_out
 
+    def subtract(self, mesh_a, mesh_b):
+        return pymesh.boolean(mesh_a, mesh_b, 'difference')
 
 
 if __name__ == '__main__':
     SS = StaticStability()
     mesh_out = SS.load_mesh('Hull_3B_Full-Scale.stl')
     print SS.get_centroid(mesh_out)
-    SS.plot_stl(SS.rotate_mesh(mesh_out, [0,0,0], 'x', 3.14159/2.0))
+    mesh_a = SS.rotate_mesh(mesh_out, [0,0,0], 'x', np.radians(5.0))
+    mesh_b = SS.rotate_mesh(mesh_out, [0,0,0], 'x', np.radians(10.0))
+    # SS.plot_stl(mesh_a)
+    # SS.plot_stl(mesh_b, hold=True)
+
+    SS.plot_stl(SS.subtract(mesh_b, mesh_a))
+    plt.show()
