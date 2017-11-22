@@ -26,6 +26,13 @@ class StaticStability:
                 temp.vectors[i][j] = vertices[f[j], :]
         return temp
 
+    def stl_to_pyMesh(self, mesh_in):
+        # convert back to pymesh
+        mesh_in.save('temp.stl')
+        mesh_out = self.load_mesh('temp.stl')
+        os.remove('temp.stl')
+        return mesh_out
+
     def get_volume(self, mesh_in):
         mesh_in = self.pyMesh_to_stl(mesh_in)
         return mesh_in.get_mass_properties()[0]
@@ -54,7 +61,7 @@ class StaticStability:
         axes.auto_scale_xyz(scale, scale, scale)
 
         # Show the plot to the screen
-        # plt.show()
+        plt.show()
 
     # axis = 'x', 'y', or 'z'
     # point is the point to rotate about
@@ -70,12 +77,7 @@ class StaticStability:
         mesh_in = self.pyMesh_to_stl(mesh_in)
         mesh_in.rotate(axis, angle, point)
 
-        # convert back to pymesh
-        mesh_in.save('temp.stl')
-        mesh_out = self.load_mesh('temp.stl')
-        os.remove('temp.stl')
-
-        return mesh_out
+        return self.stl_to_pyMesh(mesh_in)
 
     def subtract(self, mesh_a, mesh_b):
         return pymesh.boolean(mesh_a, mesh_b, 'difference')
