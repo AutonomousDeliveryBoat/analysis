@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 CAD_filename = 'Hull_Doubled_Full-Scale.STL'
 waterline_filename = 'Water.STL'
 
-rotation_point = None
+rotation_point = [0.0, 0.0, 0.0]
 rotation_axis = [1.0, 0.0, 0.0]
 
 boat_mass = 46.0 # kg
@@ -19,9 +19,10 @@ waterline_level = 140.0 # mm
 stability_model = StaticStability()
 mesh_in = stability_model.load_mesh(CAD_filename)
 
-# translate boat
+# translate and flip the boat
 centroid = stability_model.get_centroid(mesh_in)
 mesh_in = stability_model.translate_mesh(mesh_in, [-centroid[0], -centroid[1], 0.0])
+mesh_in = stability_model.rotate_mesh(mesh_in, point=None, axis=[1, 0, 0], angle=np.radians(180.0))
 
 i = 0
 for theta in np.linspace(0.0, max_angle, num_steps):
@@ -35,9 +36,15 @@ for theta in np.linspace(0.0, max_angle, num_steps):
     # only get the submerged section
     water = stability_model.load_mesh(waterline_filename)
     water_centroid = stability_model.get_centroid(water)
-    water = stability_model.translate_mesh(water, [-water_centroid[0], -water_centroid[1], -5.0 * 1000.0 + waterline_level])
+    water = stability_model.translate_mesh(water, [-water_centroid[0], -water_centroid[1], -waterline_level])
     submerged = stability_model.subtract(mesh_rot, water)
 
-    stability_model.plot_2d(stability_model.rotate_mesh(submerged, point=None, axis=[1, 0, 0], angle=np.radians(180.0)), waterline=-waterline_level)
+    # get CB
+    CB = stability_model.get_centroid(submerged)
+
+    # plot the boat in 2D
+    stability_model.plot_2d(submerged, waterline=-waterline_level)
+    plt.scatter(CB[1], CB[2], marker='x', c='r', s=40)
+    plt.scatter(rotation_point[1], rotation_point[2], marker='+', c='g', s=80)
     plt.savefig('img/' + str(i) + '.png')
     i += 1

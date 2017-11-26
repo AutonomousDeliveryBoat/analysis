@@ -61,10 +61,10 @@ class StaticStability:
         # Show the plot to the screen
         plt.show()
 
-    def plot_2d(self, mesh_in, waterline = 0.0):
+    def plot_2d(self, mesh_in, waterline=0.0):
         plt.figure()
         verticies = mesh_in.vertices
-        plt.scatter(verticies[:,1], verticies[:,2])
+        plt.scatter(verticies[:, 1], verticies[:, 2])
         plt.plot([-800, 800], [waterline, waterline])
         plt.axis('equal')
         plt.xlim([-1000.0, 1000.0])
@@ -100,15 +100,16 @@ if __name__ == '__main__':
     SS = StaticStability()
     mesh_out = SS.load_mesh('Hull_Doubled_Full-Scale.stl')
     centroid = SS.get_centroid(mesh_out)
-    mesh_out = SS.rotate_mesh(SS.translate_mesh(mesh_out, [-centroid[0], -centroid[1], 0.0]), point=None, axis=[1, 0, 0], angle=np.radians(10.0))
-    print SS.get_volume(mesh_out)/1.0E9
+    mesh_out = SS.rotate_mesh(SS.translate_mesh(mesh_out, [-centroid[0], -centroid[1], 0.0]), point=None,
+                              axis=[1, 0, 0], angle=np.radians(10.0))
+    print SS.get_volume(mesh_out) / 1.0E9
 
     water = SS.load_mesh('Water.STL')
     water_centroid = SS.get_centroid(water)
-    water = SS.translate_mesh(water, [-water_centroid[0], -water_centroid[1], -5.0 * 1000.0 + 140])
-    submerged = SS.subtract(mesh_out, water)
-    print SS.get_volume(submerged)/1.0E9 * 1000.0
-    print SS.get_centroid(submerged)
+    water = SS.translate_mesh(water, [-water_centroid[0], -water_centroid[1], -140.0])
+    # submerged = SS.subtract(mesh_out, water)
+    # print SS.get_volume(submerged) / 1.0E9 * 1000.0
+    # print SS.get_centroid(submerged)
     # SS.plot_2d(SS.rotate_mesh(submerged, point=None, axis=[1, 0, 0], angle=np.radians(180.0)), waterline=-140.0)
-    SS.plot_stl(submerged)
+    SS.plot_stl(water)
     plt.show()
