@@ -4,7 +4,7 @@ from scipy.interpolate import interp2d
 # inputs
 total_mass = 50.0 # kg
 water_density = 1000.0 # kg / m^3
-hull_displacement = total_mass / water_density / 2 # displacement of each hull
+hull_displacement = total_mass / water_density / 2.0 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
 boat_velocity = 3.0 # m/s
 desired_hull = 0 #index (only used in dimension calculations)
