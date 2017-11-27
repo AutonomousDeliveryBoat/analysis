@@ -100,7 +100,7 @@ for theta in thetas:
     plt.plot(CB_y, CB_z, 'r')
     plt.plot(CG_y, CG_z, 'k')
     plt.savefig('img/' + str(i) + '.png')
-    plt.clf()
+    plt.close()
     i += 1
 
     print "Current Displacement: " + str(stability_model.get_volume(submerged)/1E9 * 1000.0) + '\n'
