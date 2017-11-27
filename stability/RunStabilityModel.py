@@ -21,8 +21,8 @@ center_of_gravity = [0.0, 0.0, 0.0] # np.average(mesh_in.vertices[:, 2])
 rotation_axis = [1.0, 0.0, 0.0]
 
 boat_mass = 46.0  # kg
-max_angle = 90.0  # deg
-num_steps = 5  # deg
+max_angle = 80.0  # deg
+num_steps = 40  # deg
 thetas = np.linspace(0.0, max_angle, num_steps)
 np.save('thetas.npy', thetas)
 
@@ -89,7 +89,7 @@ for theta in thetas:
     gravity_moment_arr.append(gravity_moment)
 
     # plot the boat in 2D
-    stability_model.plot_2d(submerged, waterline=-waterline_level)
+    stability_model.plot_2d(mesh_rot, waterline=-waterline_level)
 
     plt.scatter(CB[1], CB[2], marker='x', c='r', s=40)
     plt.scatter(rotation_point[1], rotation_point[2], marker='+', c='g', s=80)
