@@ -17,13 +17,14 @@ mesh_in = stability_model.rotate_mesh(mesh_in, point=None, axis=[1, 0, 0], angle
 
 # inputs
 rotation_point = [0.0, 0.0, np.min(mesh_in.vertices[:, 2])]
-center_of_gravity = [0.0, 0.0, np.average(mesh_in.vertices[:, 2])]
+center_of_gravity = [0.0, 0.0, 0.0] # np.average(mesh_in.vertices[:, 2])
 rotation_axis = [1.0, 0.0, 0.0]
 
 boat_mass = 46.0  # kg
-max_angle = 20.0  # deg
-num_steps = 20  # deg
+max_angle = 90.0  # deg
+num_steps = 5  # deg
 thetas = np.linspace(0.0, max_angle, num_steps)
+np.save('thetas.npy', thetas)
 
 waterline_level = 136.9  # m
 
