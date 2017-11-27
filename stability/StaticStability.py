@@ -4,6 +4,7 @@ from mpl_toolkits import mplot3d
 from stl import mesh
 import pymesh
 import os
+from scipy.optimize import least_squares
 
 
 # Author: Anurag Makineni (11/22/2017)
@@ -95,6 +96,29 @@ class StaticStability:
 
         return self.stl_to_pyMesh(mesh_in)
 
+    def calculate_waterline(self, mesh_in, displacement, water_mesh, waterline_init):
+        self.mesh_in = mesh_in
+        self.displacement = displacement
+        self.water_mesh = water_mesh
+        error, submerged = self.get_error(waterline_init)
+        waterline = waterline_init
+
+        i = 1
+        while abs(error) > 0.1:
+            waterline = waterline - 1.0 * error
+            error, submerged = self.get_error(waterline)
+            print "Iteration: " + str(i) + ", Error: " + str(error)
+            i += 1
+
+        return waterline, submerged
+
+
+
+    def get_error(self, waterline):
+        water_centroid = self.get_centroid(self.water_mesh)
+        water = self.translate_mesh(self.water_mesh, [-water_centroid[0], -water_centroid[1], -waterline])
+        submerged = self.subtract(self.mesh_in, water)
+        return self.displacement - self.get_volume(submerged)/1E9 * 1000.0, submerged
 
 if __name__ == '__main__':
     SS = StaticStability()
