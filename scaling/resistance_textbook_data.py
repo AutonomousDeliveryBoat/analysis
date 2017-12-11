@@ -1,12 +1,13 @@
 import numpy as np
 from scipy.interpolate import interp2d
+import matplotlib.pyplot as plt
 
 # inputs
 total_mass = 50.0 # kg
 water_density = 1000.0 # kg / m^3
 hull_displacement = total_mass / water_density / 2.0 # displacement of each hull
 space_ratio = 0.5 # ratio of hull spacing to length
-boat_velocity = 4.0 # m/s
+boat_velocity = np.array([1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.25, 3.5, 3.75, 4.0]) # m/s
 desired_hull = 0 #index (only used in dimension calculations)
 efficiency = 0.7
 
@@ -69,3 +70,11 @@ P_actual = P_raw / efficiency
 print '###### RESISTANCE PARAMETERS ######'
 print 'Rt: ' + str(Rt) + ' N'
 print 'Total Propulsive Power: ' + str(P_actual) + ' W'
+
+boat_velocity = np.insert(boat_velocity, 0, [0.0])
+P_actual = np.insert(P_actual, 0, [0.0])
+plt.plot(boat_velocity, P_actual)
+plt.xlabel('Velocity of Full Scale (m/s)')
+plt.ylabel('Effective Horsepower')
+plt.title('Velocity vs. EHP')
+plt.show()
