@@ -71,10 +71,10 @@ print '###### RESISTANCE PARAMETERS ######'
 print 'Rt: ' + str(Rt) + ' N'
 print 'Total Propulsive Power: ' + str(P_actual) + ' W'
 
-boat_velocity = np.insert(boat_velocity, 0, [0.0])
-P_actual = np.insert(P_actual, 0, [0.0])
-plt.plot(boat_velocity, P_actual)
+
+plt.rcParams.update({'font.size': 18})
+plt.plot(boat_velocity, Rt, linewidth=3.0)
 plt.xlabel('Velocity of Full Scale (m/s)')
-plt.ylabel('Effective Horsepower')
-plt.title('Velocity vs. EHP')
+plt.ylabel('Hull Resistance (N)')
+plt.savefig('rt_vel.png')
 plt.show()
