@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#
+
 # Inputs
 vel_FS = np.array([])
 vel_M = np.array([])
@@ -60,6 +62,10 @@ EHP = R_TS * vel_FS
 # while idx < 14:
 #     m = np.append(m,[(R_TS[idx+1]-R_TS[idx])/(vel_FS[idx+1]-vel_FS[idx])])
 #     idx += 1
-
+print vel_FS
+print vel_M
 plt.plot(vel_FS, EHP)
+plt.xlabel('Velocity of Full Scale (m/s)')
+plt.ylabel('Effective Horsepower')
+plt.title('Velocity vs. EHP')
 plt.show()
